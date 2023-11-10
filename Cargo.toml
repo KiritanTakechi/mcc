@@ -1,6 +1,10 @@
 [package]
 name = "mcc"
 version = "0.1.0"
+authors = ["Kiritan <kiritantakechi@gmail.com>"]
+description = "Mini C Compiler"
+repository = "https://github.com/KiritanTakechi/mcc"
+license = "MIT"
 edition = "2021"
 
 
