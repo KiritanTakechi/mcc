@@ -4,7 +4,6 @@ mod keyword;
 mod operator;
 mod literal;
 mod punctuation;
-mod Operator;
 
 #[derive(Debug, PartialEq)]
 pub enum Token {
