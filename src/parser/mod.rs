@@ -1,2 +1,5 @@
 mod lexer;
-mod token;
+mod tokenizer;
+
+#[cfg(test)]
+mod tests;
