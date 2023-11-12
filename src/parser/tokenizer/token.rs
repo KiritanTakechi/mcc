@@ -1,6 +1,7 @@
 #[derive(Debug, PartialEq)]
 pub enum Token {
     // Keyword
+    Void,
     Int,
     Long,
     Float,
@@ -48,12 +49,6 @@ pub enum Token {
     XorAssign,
     LeftShiftAssign,
     RightShiftAssign,
-
-    // Literal
-    IntegerLiteral(i64),
-    FloatingLiteral(f64),
-    CharLiteral(char),
-    StringLiteral(String),
 
     // Identifier
     Identifier(String),

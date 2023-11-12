@@ -2,6 +2,10 @@ use nom::{bytes::complete::tag, combinator::map, IResult};
 
 use crate::parser::tokenizer::token::Token;
 
+pub fn parse_keyword_void(input: &str) -> IResult<&str, Token> {
+    map(tag("void"), |_| Token::Void)(input)
+}
+
 pub fn parse_keyword_int(input: &str) -> IResult<&str, Token> {
     map(tag("int"), |_| Token::Int)(input)
 }

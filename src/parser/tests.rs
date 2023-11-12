@@ -1,10 +1,21 @@
-use crate::parser::{
-    lexer::{
-        comment::*, identifier::*, keyword::*, literal::*, operator::*, punctuation::*,
-        whitespace::*,
+use crate::{
+    ast::node::Expression,
+    parser::{
+        lexer::{
+            comment::*, identifier::*, keyword::*, operator::*, punctuation::*, whitespace::*,
+        },
+        syntax::literal::*,
+        tokenizer::token::Token,
     },
-    tokenizer::token::Token,
 };
+
+// lexer
+
+#[test]
+fn test_parse_keyword_void() {
+    let result = parse_keyword_void("void");
+    assert_eq!(result, Ok(("", Token::Void)));
+}
 
 #[test]
 fn test_parse_keyword_int() {
@@ -81,19 +92,19 @@ fn test_parse_keyword_return() {
 #[test]
 fn test_parse_integer_literal() {
     let result = parse_integer_literal("12345");
-    assert_eq!(result, Ok(("", Token::IntegerLiteral(12345))));
+    assert_eq!(result, Ok(("", Expression::IntegerLiteral(12345))));
 }
 
 #[test]
 fn test_parse_floating_literal() {
     let result = parse_floating_literal("123.45");
-    assert_eq!(result, Ok(("", Token::FloatingLiteral(123.45))));
+    assert_eq!(result, Ok(("", Expression::FloatingLiteral(123.45))));
 }
 
 #[test]
 fn test_parse_char_literal() {
     let result = parse_char_literal("'a'");
-    assert_eq!(result, Ok(("", Token::CharLiteral('a'))));
+    assert_eq!(result, Ok(("", Expression::CharLiteral('a'))));
 }
 
 #[test]
@@ -101,7 +112,7 @@ fn test_parse_string_literal() {
     let result = parse_string_literal("\"Hello, World!\"");
     assert_eq!(
         result,
-        Ok(("", Token::StringLiteral("Hello, World!".to_string())))
+        Ok(("", Expression::StringLiteral("Hello, World!".to_string())))
     );
 }
 
@@ -436,3 +447,5 @@ fn test_parse_comment_block() {
         ))
     );
 }
+
+// syntax
