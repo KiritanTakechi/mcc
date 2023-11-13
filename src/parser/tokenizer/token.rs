@@ -66,9 +66,6 @@ pub enum Token {
     Arrow,
     Ellipsis,
 
-    // Whitespace
-    Whitespace,
-
     // Comment
     CommentLine(String),
     CommentBlock(String),

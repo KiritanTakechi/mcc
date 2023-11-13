@@ -1,10 +1,8 @@
 use crate::{
-    ast::node::Expression,
+    ast::node::*,
     parser::{
-        lexer::{
-            comment::*, identifier::*, keyword::*, operator::*, punctuation::*, whitespace::*,
-        },
-        syntax::literal::*,
+        lexer::{comment::*, identifier::*, keyword::*, operator::*, punctuation::*},
+        syntax::{declaration::*, literal::*},
         tokenizer::token::Token,
     },
 };
@@ -321,8 +319,8 @@ fn test_parse_comma() {
 }
 
 #[test]
-fn test_parse_semi_colon() {
-    let result = parse_semi_colon(";");
+fn test_parse_semicolon() {
+    let result = parse_semicolon(";");
     assert_eq!(result, Ok(("", Token::SemiColon)));
 }
 
@@ -378,12 +376,6 @@ fn test_parse_arrow() {
 fn test_parse_ellipsis() {
     let result = parse_ellipsis("...");
     assert_eq!(result, Ok(("", Token::Ellipsis)));
-}
-
-#[test]
-fn test_parse_whitespace() {
-    let result = parse_whitespace("   \t\n");
-    assert_eq!(result, Ok(("", Token::Whitespace)));
 }
 
 #[test]
@@ -449,3 +441,23 @@ fn test_parse_comment_block() {
 }
 
 // syntax
+#[test]
+fn test_parse_type_specifier() {
+    let result = parse_type_specifier("int").unwrap().1;
+    assert_eq!(result, TypeSpecifier::Int);
+
+    let result = parse_type_specifier("float").unwrap().1;
+    assert_eq!(result, TypeSpecifier::Float);
+}
+
+#[test]
+fn test_parse_variable_declaration() {
+    let input = "int x;";
+    let expected = VariableDeclaration {
+        type_specifier: TypeSpecifier::Int,
+        identifier: "x".to_string(),
+    };
+
+    let (_, result) = parse_variable_declaration(input).unwrap();
+    assert_eq!(result, expected);
+}

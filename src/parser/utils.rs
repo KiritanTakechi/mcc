@@ -1,4 +1,4 @@
-use crate::ast::node::{BinaryOperator, UnaryOperator};
+use crate::ast::{node::*, traits::IntoStatement};
 
 use super::tokenizer::token::Token;
 
@@ -34,4 +34,39 @@ pub fn token_to_binary_operator(token: Token) -> Option<BinaryOperator> {
         Token::RightShift => Some(BinaryOperator::RightShift),
         _ => None,
     }
+}
+
+pub fn token_to_type_specifier(token: Token) -> Option<TypeSpecifier> {
+    match token {
+        Token::Void => Some(TypeSpecifier::Void),
+        Token::Int => Some(TypeSpecifier::Int),
+        Token::Long => Some(TypeSpecifier::Long),
+        Token::Float => Some(TypeSpecifier::Float),
+        Token::Double => Some(TypeSpecifier::Double),
+        Token::Char => Some(TypeSpecifier::Char),
+        Token::Union => Some(TypeSpecifier::Union),
+        Token::Struct => Some(TypeSpecifier::Struct),
+        _ => None,
+    }
+}
+
+pub fn token_to_assignment_operator(token: Token) -> Option<AssignmentOperator> {
+    match token {
+        Token::Assignment => Some(AssignmentOperator::Assignment),
+        Token::AddAssign => Some(AssignmentOperator::AddAssign),
+        Token::SubtractAssign => Some(AssignmentOperator::SubtractAssign),
+        Token::MultiplyAssign => Some(AssignmentOperator::MultiplyAssign),
+        Token::DivideAssign => Some(AssignmentOperator::DivideAssign),
+        Token::ModuloAssign => Some(AssignmentOperator::ModuloAssign),
+        Token::AndAssign => Some(AssignmentOperator::AndAssign),
+        Token::OrAssign => Some(AssignmentOperator::OrAssign),
+        Token::XorAssign => Some(AssignmentOperator::XorAssign),
+        Token::LeftShiftAssign => Some(AssignmentOperator::LeftShiftAssign),
+        Token::RightShiftAssign => Some(AssignmentOperator::RightShiftAssign),
+        _ => None,
+    }
+}
+
+pub fn statement_inverse_enum<T: IntoStatement>(statement: T) -> Option<Statement> {
+    Some(statement.into_statement())
 }

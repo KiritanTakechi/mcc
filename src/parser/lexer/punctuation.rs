@@ -6,7 +6,7 @@ pub fn parse_comma(input: &str) -> IResult<&str, Token> {
     map(char(','), |_| Token::Comma)(input)
 }
 
-pub fn parse_semi_colon(input: &str) -> IResult<&str, Token> {
+pub fn parse_semicolon(input: &str) -> IResult<&str, Token> {
     map(char(';'), |_| Token::SemiColon)(input)
 }
 

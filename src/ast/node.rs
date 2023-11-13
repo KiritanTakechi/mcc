@@ -4,14 +4,6 @@ pub struct Program {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct FunctionDefinition {
-    pub return_type: TypeSpecifier,
-    pub name: String,
-    pub parameters: Vec<Parameter>,
-    pub body: CompoundStatement,
-}
-
-#[derive(Debug, PartialEq)]
 pub enum TypeSpecifier {
     Int,
     Long,
@@ -21,6 +13,14 @@ pub enum TypeSpecifier {
     Struct,
     Union,
     Void,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct FunctionDefinition {
+    pub return_type: TypeSpecifier,
+    pub name: String,
+    pub parameters: Vec<Parameter>,
+    pub body: CompoundStatement,
 }
 
 #[derive(Debug, PartialEq)]
@@ -52,6 +52,7 @@ pub enum Expression {
     // 赋值表达式
     AssignmentExpression {
         identifier: String,
+        operator: AssignmentOperator,
         value: Box<Expression>,
     },
 
@@ -88,6 +89,21 @@ pub enum BinaryOperator {
     BitwiseXor,
     LeftShift,
     RightShift,
+}
+
+#[derive(Debug, PartialEq)]
+pub enum AssignmentOperator {
+    Assignment,
+    AddAssign,
+    SubtractAssign,
+    MultiplyAssign,
+    DivideAssign,
+    ModuloAssign,
+    AndAssign,
+    OrAssign,
+    XorAssign,
+    LeftShiftAssign,
+    RightShiftAssign,
 }
 
 #[derive(Debug, PartialEq)]
