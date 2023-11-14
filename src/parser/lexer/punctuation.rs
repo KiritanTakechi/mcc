@@ -1,4 +1,4 @@
-use nom::{bytes::complete::tag, character::complete::char, combinator::map, IResult};
+use nom::{branch::alt, bytes::complete::tag, character::complete::char, combinator::map, IResult};
 
 use crate::parser::tokenizer::token::Token;
 
@@ -44,4 +44,20 @@ pub fn parse_arrow(input: &str) -> IResult<&str, Token> {
 
 pub fn parse_ellipsis(input: &str) -> IResult<&str, Token> {
     map(tag("..."), |_| Token::Ellipsis)(input)
+}
+
+pub fn parse_punctuation(input: &str) -> IResult<&str, Token> {
+    alt((
+        parse_comma,
+        parse_semicolon,
+        parse_open_paren,
+        parse_close_paren,
+        parse_open_brace,
+        parse_close_brace,
+        parse_open_bracket,
+        parse_close_bracket,
+        parse_dot,
+        parse_arrow,
+        parse_ellipsis,
+    ))(input)
 }

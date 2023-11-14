@@ -1,6 +1,6 @@
 #[derive(Debug, PartialEq)]
 pub enum Token {
-    // Keyword
+    // 关键字
     Void,
     Int,
     Long,
@@ -15,7 +15,7 @@ pub enum Token {
     For,
     Return,
 
-    // Operator
+    // 操作符
     Plus,
     Minus,
     Multiply,
@@ -50,10 +50,16 @@ pub enum Token {
     LeftShiftAssign,
     RightShiftAssign,
 
-    // Identifier
+    // 标识符
     Identifier(String),
 
-    // Punctuation
+    // 字面量
+    IntegerLiteral(i64),
+    FloatingLiteral(f64),
+    CharLiteral(char),
+    StringLiteral(String),
+
+    // 标点符号
     Comma,
     SemiColon,
     OpenParen,
@@ -66,7 +72,9 @@ pub enum Token {
     Arrow,
     Ellipsis,
 
-    // Comment
-    CommentLine(String),
-    CommentBlock(String),
+    // 错误Token
+    Illegal(String),
+
+    // 注释
+    Comment,
 }

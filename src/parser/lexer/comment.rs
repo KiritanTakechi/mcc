@@ -1,7 +1,8 @@
 use nom::{
-    bytes::complete::{tag, take_until, take_while},
-    character::complete::char,
-    combinator::{map, recognize},
+    branch::alt,
+    bytes::complete::{tag, take_until},
+    character::complete::{line_ending, not_line_ending},
+    combinator::{eof, map, opt},
     sequence::{delimited, preceded, terminated},
     IResult,
 };
@@ -9,18 +10,21 @@ use nom::{
 use crate::parser::tokenizer::token::Token;
 
 pub fn parse_comment_line(input: &str) -> IResult<&str, Token> {
-    map(
-        terminated(
-            recognize(preceded(tag("//"), take_while(|c| c != '\n'))),
-            char('\n'),
+    preceded(
+        tag("//"),
+        map(
+            terminated(not_line_ending, opt(alt((line_ending, eof)))),
+            |_| Token::Comment,
         ),
-        |s: &str| Token::CommentLine(s.to_string()),
     )(input)
 }
 
 pub fn parse_comment_block(input: &str) -> IResult<&str, Token> {
-    map(
-        delimited(tag("/*"), take_until("*/"), tag("*/")),
-        |s: &str| Token::CommentBlock(s.to_string()),
-    )(input)
+    map(delimited(tag("/*"), take_until("*/"), tag("*/")), |_| {
+        Token::Comment
+    })(input)
+}
+
+pub fn parse_comment(input: &str) -> IResult<&str, Token> {
+    alt((parse_comment_line, parse_comment_block))(input)
 }

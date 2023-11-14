@@ -1,4 +1,4 @@
-use nom::{bytes::complete::tag, character::complete::char, combinator::map, IResult};
+use nom::{branch::alt, bytes::complete::tag, character::complete::char, combinator::map, IResult};
 
 use crate::parser::tokenizer::token::Token;
 
@@ -132,4 +132,66 @@ pub fn parse_operator_left_shift_assign(input: &str) -> IResult<&str, Token> {
 
 pub fn parse_operator_right_shift_assign(input: &str) -> IResult<&str, Token> {
     map(tag(">>="), |_| Token::RightShiftAssign)(input)
+}
+
+pub fn parse_operator_basic(input: &str) -> IResult<&str, Token> {
+    alt((
+        parse_operator_plus,
+        parse_operator_minus,
+        parse_operator_multiply,
+        parse_operator_divide,
+        parse_operator_modulo,
+        parse_operator_increment,
+        parse_operator_decrement,
+    ))(input)
+}
+
+pub fn parse_operator_logical(input: &str) -> IResult<&str, Token> {
+    alt((
+        parse_operator_equal,
+        parse_operator_not_equal,
+        parse_operator_less_than,
+        parse_operator_greater_than,
+        parse_operator_less_than_or_equal,
+        parse_operator_greater_than_or_equal,
+        parse_operator_logical_and,
+        parse_operator_logical_or,
+        parse_operator_logical_not,
+    ))(input)
+}
+
+pub fn parse_operator_bitwise(input: &str) -> IResult<&str, Token> {
+    alt((
+        parse_operator_bitwise_and,
+        parse_operator_bitwise_or,
+        parse_operator_bitwise_not,
+        parse_operator_bitwise_xor,
+        parse_operator_left_shift,
+        parse_operator_right_shift,
+    ))(input)
+}
+
+pub fn parse_operator_assign(input: &str) -> IResult<&str, Token> {
+    alt((
+        parse_operator_assignment,
+        parse_operator_add_assign,
+        parse_operator_subtract_assign,
+        parse_operator_multiply_assign,
+        parse_operator_divide_assign,
+        parse_operator_modulo_assign,
+        parse_operator_and_assign,
+        parse_operator_or_assign,
+        parse_operator_xor_assign,
+        parse_operator_left_shift_assign,
+        parse_operator_right_shift_assign,
+    ))(input)
+}
+
+pub fn parse_operator(input: &str) -> IResult<&str, Token> {
+    alt((
+        parse_operator_basic,
+        parse_operator_logical,
+        parse_operator_bitwise,
+        parse_operator_assign,
+    ))(input)
 }

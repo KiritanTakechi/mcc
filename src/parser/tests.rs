@@ -418,26 +418,14 @@ fn test_parse_identifier_starts_with_letter() {
 fn test_parse_comment_line() {
     let input = "// This is a single line comment\nNext line";
     let result = parse_comment_line(input);
-    assert_eq!(
-        result,
-        Ok((
-            "Next line",
-            Token::CommentLine("// This is a single line comment".to_string())
-        ))
-    );
+    assert_eq!(result, Ok(("Next line", Token::Comment)));
 }
 
 #[test]
 fn test_parse_comment_block() {
     let input = "/* This is a\nmulti-line comment */Next part";
     let result = parse_comment_block(input);
-    assert_eq!(
-        result,
-        Ok((
-            "Next part",
-            Token::CommentBlock(" This is a\nmulti-line comment ".to_string())
-        ))
-    );
+    assert_eq!(result, Ok(("Next part", Token::Comment)));
 }
 
 // syntax

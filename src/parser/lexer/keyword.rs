@@ -1,4 +1,4 @@
-use nom::{bytes::complete::tag, combinator::map, IResult};
+use nom::{branch::alt, bytes::complete::tag, combinator::map, IResult};
 
 use crate::parser::tokenizer::token::Token;
 
@@ -51,4 +51,22 @@ pub fn parse_keyword_for(input: &str) -> IResult<&str, Token> {
 
 pub fn parse_keyword_return(input: &str) -> IResult<&str, Token> {
     map(tag("return"), |_| Token::Return)(input)
+}
+
+pub fn parse_keyword(input: &str) -> IResult<&str, Token> {
+    alt((
+        parse_keyword_void,
+        parse_keyword_int,
+        parse_keyword_long,
+        parse_keyword_float,
+        parse_keyword_double,
+        parse_keyword_char,
+        parse_keyword_struct,
+        parse_keyword_union,
+        parse_keyword_if,
+        parse_keyword_else,
+        parse_keyword_while,
+        parse_keyword_for,
+        parse_keyword_return,
+    ))(input)
 }
