@@ -46,3 +46,35 @@ pub fn parse_literal(input: &str) -> IResult<&str, Token> {
         parse_string_literal,
     ))(input)
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::parser::lexer::literal::*;
+
+    #[test]
+    fn test_parse_integer_literal() {
+        let result = parse_integer_literal("12345");
+        assert_eq!(result, Ok(("", Token::IntegerLiteral(12345))));
+    }
+
+    #[test]
+    fn test_parse_floating_literal() {
+        let result = parse_floating_literal("123.45");
+        assert_eq!(result, Ok(("", Token::FloatingLiteral(123.45))));
+    }
+
+    #[test]
+    fn test_parse_char_literal() {
+        let result = parse_char_literal("'a'");
+        assert_eq!(result, Ok(("", Token::CharLiteral('a'))));
+    }
+
+    #[test]
+    fn test_parse_string_literal() {
+        let result = parse_string_literal("\"Hello, World!\"");
+        assert_eq!(
+            result,
+            Ok(("", Token::StringLiteral("Hello, World!".to_string())))
+        );
+    }
+}

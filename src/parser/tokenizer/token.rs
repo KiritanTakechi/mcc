@@ -12,6 +12,7 @@ pub enum Token {
     If,
     Else,
     While,
+    Do,
     For,
     Return,
 

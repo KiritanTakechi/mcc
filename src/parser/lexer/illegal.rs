@@ -42,3 +42,6 @@ pub fn parse_known_token(input: &str) -> IResult<&str, bool> {
 
     Ok((remaining, true))
 }
+
+#[cfg(test)]
+mod tests {}

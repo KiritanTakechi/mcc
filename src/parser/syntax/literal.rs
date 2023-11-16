@@ -1,38 +1,13 @@
-use nom::{
-    bytes::complete::{tag, take_while},
-    character::complete::{char, digit1, one_of},
-    combinator::{map, map_res},
-    number::complete::double,
-    sequence::delimited,
-    IResult,
-};
+use std::{iter::Peekable, slice::Iter};
 
-use crate::ast::node::Expression;
+use crate::{ast::node::Expression, parser::tokenizer::token::Token};
 
-pub fn parse_integer_literal(input: &str) -> IResult<&str, Expression> {
-    map_res(digit1, |s: &str| {
-        s.parse::<i64>().map(|n| Expression::IntegerLiteral(n))
-    })(input)
-}
-
-pub fn parse_floating_literal(input: &str) -> IResult<&str, Expression> {
-    map(double, |f| (Expression::FloatingLiteral(f)))(input)
-}
-
-pub fn parse_char_literal(input: &str) -> IResult<&str, Expression> {
-    map(
-        delimited(
-            char('\''),
-            one_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"),
-            char('\''),
-        ),
-        |c: char| Expression::CharLiteral(c),
-    )(input)
-}
-
-pub fn parse_string_literal(input: &str) -> IResult<&str, Expression> {
-    map(
-        delimited(tag("\""), take_while(|c: char| c != '\"'), tag("\"")),
-        |s: &str| Expression::StringLiteral(s.to_string()),
-    )(input)
+pub fn parse_literal(tokens_iter: &mut Peekable<Iter<Token>>) -> Result<Expression, String> {
+    match tokens_iter.next() {
+        Some(Token::IntegerLiteral(n)) => Ok(Expression::IntegerLiteral(n.to_owned())),
+        Some(Token::FloatingLiteral(f)) => Ok(Expression::FloatingLiteral(f.to_owned())),
+        Some(Token::CharLiteral(c)) => Ok(Expression::CharLiteral(c.to_owned())),
+        Some(Token::StringLiteral(s)) => Ok(Expression::StringLiteral(s.to_owned())),
+        _ => Err("Expected a literal".to_string()),
+    }
 }

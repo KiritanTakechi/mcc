@@ -28,3 +28,22 @@ pub fn parse_comment_block(input: &str) -> IResult<&str, Token> {
 pub fn parse_comment(input: &str) -> IResult<&str, Token> {
     alt((parse_comment_line, parse_comment_block))(input)
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::parser::lexer::comment::*;
+
+    #[test]
+    fn test_parse_comment_line() {
+        let input = "// This is a single line comment\nNext line";
+        let result = parse_comment_line(input);
+        assert_eq!(result, Ok(("Next line", Token::Comment)));
+    }
+
+    #[test]
+    fn test_parse_comment_block() {
+        let input = "/* This is a\nmulti-line comment */Next part";
+        let result = parse_comment_block(input);
+        assert_eq!(result, Ok(("Next part", Token::Comment)));
+    }
+}

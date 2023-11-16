@@ -1,55 +1,26 @@
-use nom::{
-    branch::alt,
-    character::complete::{space0, space1},
-    combinator::map_opt,
-    sequence::tuple,
-    IResult,
-};
+use std::{iter::Peekable, slice::Iter};
+
+use nom::IResult;
 
 use crate::{
     ast::node::{TypeSpecifier, VariableDeclaration},
-    parser::{
-        lexer::{identifier::parse_identifier, keyword::*, punctuation::parse_semicolon},
-        tokenizer::token::Token,
-        utils::token_to_type_specifier,
-    },
+    parser::tokenizer::token::Token,
 };
 
 pub fn parse_variable_declaration(input: &str) -> IResult<&str, VariableDeclaration> {
-    let (input, (type_specifier, _, identifier_token, _, _)) = tuple((
-        parse_type_specifier,
-        space1,
-        parse_identifier,
-        space0,
-        parse_semicolon,
-    ))(input)?;
-
-    let identifier = match identifier_token {
-        Token::Identifier(s) => s,
-        _ => panic!("Expected an identifier"),
-    };
-
-    Ok((
-        input,
-        VariableDeclaration {
-            type_specifier,
-            identifier,
-        },
-    ))
+    todo!()
 }
 
-pub fn parse_type_specifier(input: &str) -> IResult<&str, TypeSpecifier> {
-    map_opt(
-        alt((
-            parse_keyword_void,
-            parse_keyword_int,
-            parse_keyword_long,
-            parse_keyword_float,
-            parse_keyword_double,
-            parse_keyword_char,
-            parse_keyword_union,
-            parse_keyword_struct,
-        )),
-        token_to_type_specifier,
-    )(input)
+fn parse_type_specifier(tokens_iter: &mut Peekable<Iter<Token>>) -> Result<TypeSpecifier, String> {
+    match tokens_iter.next() {
+        Some(Token::Void) => Ok(TypeSpecifier::Void),
+        Some(Token::Int) => Ok(TypeSpecifier::Int),
+        Some(Token::Long) => Ok(TypeSpecifier::Long),
+        Some(Token::Float) => Ok(TypeSpecifier::Float),
+        Some(Token::Double) => Ok(TypeSpecifier::Double),
+        Some(Token::Char) => Ok(TypeSpecifier::Char),
+        Some(Token::Struct) => Ok(TypeSpecifier::Struct),
+        Some(Token::Union) => Ok(TypeSpecifier::Union),
+        _ => Err("Expected a type specifier".to_string()),
+    }
 }

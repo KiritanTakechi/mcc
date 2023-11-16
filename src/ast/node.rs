@@ -5,6 +5,7 @@ pub struct Program {
 
 #[derive(Debug, PartialEq)]
 pub enum TypeSpecifier {
+    Void,
     Int,
     Long,
     Float,
@@ -12,7 +13,6 @@ pub enum TypeSpecifier {
     Char,
     Struct,
     Union,
-    Void,
 }
 
 #[derive(Debug, PartialEq)]
