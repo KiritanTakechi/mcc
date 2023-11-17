@@ -6,3 +6,6 @@ pub mod literal;
 pub mod operator;
 pub mod parameter;
 pub mod statement;
+
+#[cfg(test)]
+mod tests {}

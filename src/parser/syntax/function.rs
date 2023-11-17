@@ -18,3 +18,6 @@ use crate::{ast::node::FunctionDefinition, parser::lexer::identifier::parse_iden
 //         },
 //     )(input)
 // }
+
+#[cfg(test)]
+mod tests {}
